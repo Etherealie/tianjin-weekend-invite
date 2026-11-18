@@ -3,195 +3,422 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#eaf1fb">
+  <meta name="description" content="从天津市区和滨海挑一条周末路线，再选想去的景点。">
   <title>周末一起逛天津？</title>
   <style>
     :root {
-      --paper: #f8f5ee;
-      --white: #fffdf8;
-      --ink: #19352d;
-      --muted: #54665e;
-      --line: #dbded0;
-      --orange: #b14a27;
-      --peach: #f7e8dc;
-      --green: #236958;
-      --mint: #e7efe6;
-      font-family: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
-      color: var(--ink);
-      background: var(--paper);
+      color-scheme: light;
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: #172637;
+      background: #ecf1fa;
+      --muted: #526478;
+      --blue: #245995;
+      --glass: rgba(255, 255, 255, .56);
+      --edge: rgba(255, 255, 255, .9);
+      --shadow: 0 15px 44px rgba(50, 70, 117, .11), inset 0 1px 1px #fff;
     }
     * { box-sizing: border-box; }
-    body { margin: 0; }
-    main { width: min(100% - 36px, 750px); margin: auto; padding: clamp(30px, 7vw, 74px) 0 48px; }
-    h1, h2, h3, p, fieldset { margin: 0; }
-    header { padding: 0 0 25px; }
-    .date { display: flex; align-items: center; gap: 12px; color: var(--muted); font-size: .9rem; }
-    .date::before { content: ""; width: 32px; height: 2px; background: var(--orange); }
-    h1 { margin: 12px 0 9px; font-family: "Noto Serif SC","Songti SC","SimSun",serif; font-size: clamp(2rem, 6.8vw, 3.5rem); line-height: 1.18; letter-spacing: -.045em; }
+    body { margin: 0; min-height: 100vh; background: radial-gradient(ellipse at 4% 6%, #f8d7c5 0%, transparent 39%), radial-gradient(ellipse at 86% 15%, #c2d9fb 0%, transparent 48%), radial-gradient(ellipse at 83% 85%, #c5ebec 0%, transparent 48%), #eef2fa; }
+    h1, h2, h3, p, fieldset, ol { margin: 0; }
+    h1 { font-size: clamp(2.5rem, 7vw, 5rem); line-height: 1.12; letter-spacing: -.07em; }
+    h2, legend { font-size: 1.22rem; font-weight: 730; letter-spacing: -.025em; }
     p { line-height: 1.65; }
-    .intro { color: var(--muted); }
-    fieldset { border: 0; padding: 0; min-width: 0; }
-    legend { padding: 0; margin-bottom: 12px; font-weight: 700; }
-    .choices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-    .card { position: relative; display: grid; grid-template-columns: 1fr auto; gap: 5px 10px; align-items: start; padding: 17px; border-radius: 17px; border: 2px solid transparent; cursor: pointer; }
-    .card.city { background: var(--peach); --accent: var(--orange); }
-    .card.coast { background: var(--mint); --accent: var(--green); }
-    .card:has(input:checked) { border-color: var(--accent); }
-    .card:has(input:focus-visible) { outline: 3px solid var(--green); outline-offset: 3px; }
-    .card input { grid-column: 2; grid-row: 1; accent-color: var(--accent); width: 21px; height: 21px; margin: 0; }
-    .card strong { grid-column: 1; grid-row: 1; font-size: 1.16rem; line-height: 1.45; }
-    .card span, .card small { grid-column: 1 / -1; line-height: 1.5; }
-    .card small { color: var(--muted); margin-top: 3px; }
-    .route { margin-top: 18px; background: var(--white); border: 1px solid var(--line); border-radius: 17px; padding: 16px 18px; }
-    summary { cursor: pointer; font-weight: 700; padding: 8px 0; }
-    .days { display: grid; gap: 13px; margin-top: 8px; }
-    .day { display: grid; grid-template-columns: auto minmax(0,1fr); gap: 10px; align-items: baseline; }
-    .day h3 { font-size: .9rem; color: var(--green); }
-    .day p { font-size: .94rem; }
-    .travel { margin-top: 10px; color: var(--muted); font-size: .88rem; }
-    .extras { margin-top: 20px; }
-    .checks { display: flex; flex-wrap: wrap; gap: 7px; }
-    .check { display: flex; align-items: center; gap: 7px; min-height: 44px; border: 1px solid var(--line); background: var(--white); border-radius: 10px; padding: 7px 11px; cursor: pointer; }
-    .check input { width: 17px; height: 17px; accent-color: var(--green); margin: 0; }
-    .check:has(input:checked) { background: var(--mint); border-color: var(--green); }
-    .reply { margin-top: 21px; border-top: 1px solid var(--line); padding-top: 17px; }
-    .reply h2 { font-size: 1rem; }
-    textarea { width: 100%; min-height: 74px; margin: 9px 0; padding: 10px 12px; resize: vertical; border: 1px solid var(--line); border-radius: 10px; background: var(--white); color: var(--ink); font: inherit; line-height: 1.55; }
-    button { font: inherit; border-radius: 10px; background: var(--ink); color: var(--white); border: 0; min-height: 45px; padding: 8px 19px; cursor: pointer; }
-    button:hover { background: var(--green); }
-    :focus-visible { outline: 3px solid var(--green); outline-offset: 3px; }
-    #status { margin-top: 6px; min-height: 1.5em; color: var(--muted); font-size: .88rem; }
+    a { color: #174f91; text-underline-offset: 3px; }
+    button, textarea { font: inherit; }
+    button, summary, label { -webkit-tap-highlight-color: transparent; }
+    button, summary, label:has(input) { cursor: pointer; }
     [hidden] { display: none !important; }
-    @media (max-width: 560px) {
-      .choices { grid-template-columns: 1fr; gap: 9px; }
-      .card { padding: 12px 14px; gap: 2px 10px; }
-      .card strong { font-size: 1.04rem; }
-      .card small { margin-top: 1px; }
-      .route { padding: 12px 14px; }
+    :focus-visible { outline: 3px solid #356ab0; outline-offset: 4px; }
+    main { width: min(calc(100% - 36px), 860px); margin-inline: auto; padding: clamp(30px, 7vw, 72px) 0 44px; }
+    .glass { background: var(--glass); border: 1px solid var(--edge); border-radius: 28px; box-shadow: var(--shadow); backdrop-filter: blur(22px) saturate(145%); }
+    .hero { position: relative; isolation: isolate; overflow: hidden; padding: clamp(24px, 5vw, 44px); margin-bottom: 28px; }
+    .hero::after { content: ""; position: absolute; z-index: -1; width: 40%; aspect-ratio: 1; top: -45%; right: -4%; border: 1px solid #fff; border-radius: 46%; transform: rotate(-22deg); background: linear-gradient(145deg, #fff8, #b3c9f64d 60%, #fff7); box-shadow: 0 25px 58px #6182ba24, inset 0 0 22px #fff9; }
+    .hero .date { margin-bottom: 9px; font-size: .88rem; font-weight: 660; color: var(--muted); }
+    .hero p:last-child { margin-top: 13px; color: var(--muted); }
+    fieldset { padding: 0; border: 0; min-width: 0; }
+    legend { padding: 0; margin-bottom: 12px; }
+    .routes, .days { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .route-choice { position: relative; isolation: isolate; overflow: hidden; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 10px; padding: 20px; min-height: 129px; }
+    .route-choice.city { background: linear-gradient(145deg, #fff9f3d9, #fbe4dbc2); }
+    .route-choice.coast { background: linear-gradient(145deg, #f5fbffd9, #d4ebf9ca); }
+    .route-choice::before { content: ""; position: absolute; z-index: -1; inset: auto -7% -65% 52%; aspect-ratio: 1.35; border-radius: 48%; transform: rotate(-25deg); background: linear-gradient(160deg, #fffd, transparent); box-shadow: inset 0 1px 3px #fffc; pointer-events: none; }
+    .route-choice:has(:checked), .pick:has(:checked) { border-color: #3674b9; box-shadow: 0 0 0 1px #3674b9, var(--shadow); }
+    .route-choice strong { font-size: clamp(1.28rem, 3.4vw, 1.75rem); letter-spacing: -.055em; }
+    .route-choice span, .route-choice small { grid-column: 1 / -1; }
+    .route-choice small, .muted { color: var(--muted); line-height: 1.55; }
+    input { accent-color: #245b9b; }
+    .route-choice input { width: 19px; height: 19px; margin: 3px 0 0; }
+    .panel { margin-top: 14px; padding: clamp(15px, 4.1vw, 26px); }
+    .picks { display: flex; flex-wrap: wrap; gap: 9px; }
+    .pick { display: flex; align-items: center; gap: 7px; min-height: 44px; padding: 8px 12px; border: 1px solid var(--edge); border-radius: 16px; background: #ffffff74; font-size: .94rem; }
+    .pick input { margin: 0; width: 16px; height: 16px; flex: 0 0 auto; }
+    .picks.variants .pick { min-height: 46px; }
+    #variant-note { margin-top: 12px; font-size: .92rem; }
+    .day { min-width: 0; padding: 15px; border-radius: 18px; border: 1px solid #fff; background: #ffffff60; }
+    .day h3 { margin-bottom: 9px; font-size: 1rem; }
+    .day ol { padding: 0; list-style: none; }
+    .day li { display: grid; grid-template-columns: 3.4rem minmax(0,1fr); gap: 6px; padding: 6px 0; line-height: 1.55; font-size: .9rem; }
+    .day time { font-variant-numeric: tabular-nums; color: var(--blue); font-weight: 700; }
+    .section-title { margin-bottom: 12px; }
+    details { margin-top: 13px; border-top: 1px solid #7b94b238; }
+    summary { padding: 11px 0 3px; font-weight: 650; }
+    .legs { padding: 0; list-style: none; }
+    .legs li { padding: 9px 0; border-bottom: 1px solid #7b94b226; }
+    .legs strong, .legs span { display: block; line-height: 1.6; font-size: .9rem; }
+    .legs span { color: var(--muted); }
+    .helper { margin-top: 9px; font-size: .85rem; }
+    .preferences { display: grid; gap: 18px; }
+    .reply-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+    textarea { display: block; width: 100%; min-height: 78px; border: 1px solid #fff; background: #ffffff83; color: inherit; border-radius: 16px; margin: 11px 0; padding: 10px 13px; line-height: 1.55; resize: vertical; }
+    button { min-height: 44px; border-radius: 999px; border: 1px solid #fff9; background: linear-gradient(155deg, #397bc4, #215195); color: #fff; font-weight: 690; padding: 8px 18px; box-shadow: 0 6px 17px #24599538, inset 0 1px 1px #fff7; }
+    button:hover { background: #214f91; }
+    #status { font-size: .86rem; }
+    @media (max-width: 570px) {
+      main { width: calc(100% - 28px); }
+      .hero { margin-bottom: 21px; }
+      .routes, .days { grid-template-columns: 1fr; }
+      .route-choice { min-height: 0; padding: 14px 16px; }
+      .glass { border-radius: 23px; }
+      .day { padding: 12px; }
     }
   </style>
 </head>
 <body>
   <main>
-    <header>
+    <header class="hero glass">
       <p class="date">周六中午出发 · 周日下午结束</p>
       <h1>周末一起逛天津？</h1>
-      <p class="intro">我挑了两条路线，你更想逛老城，还是去海边走走？</p>
+      <p>海河夜景、老房子，或者去滨海看海。挑一条你更想走的，再选几个特别想去的地方。</p>
     </header>
 
     <form id="invite">
       <fieldset>
-        <legend>你更想去哪儿？</legend>
-        <div class="choices">
-          <label class="card city">
-            <input type="radio" name="route" value="city" aria-controls="city">
-            <strong>市区 · 逛老城看夜景</strong>
+        <legend>想去哪边？</legend>
+        <div class="routes">
+          <label class="route-choice city glass">
+            <strong>市区 · 逛老城</strong>
+            <input name="route" value="city" type="radio" aria-controls="planner">
             <span>五大道、西开教堂、海河夜景</span>
-            <small>景点间步行或骑车，晚上看解放桥和世纪钟</small>
+            <small>短途步行或骑车，晚上看解放桥和世纪钟</small>
           </label>
-          <label class="card coast">
-            <input type="radio" name="route" value="coast" aria-controls="coast">
-            <strong>滨海 · 逛馆再去看海</strong>
-            <span>滨海图书馆、海博馆、观澜角</span>
-            <small>景点间打车，留半天慢慢逛馆和看海</small>
+          <label class="route-choice coast glass">
+            <strong>滨海 · 去看海</strong>
+            <input name="route" value="coast" type="radio" aria-controls="planner">
+            <span>海博馆、观澜角，也可以去东疆</span>
+            <small>区内主要打车，周六可选东疆、极地海洋公园或方特</small>
           </label>
         </div>
       </fieldset>
 
-      <section id="city" hidden aria-label="市区选项">
-        <details class="route" open>
-          <summary>市区怎么玩</summary>
-          <div class="days">
-            <div class="day"><h3>周六</h3><p>民园广场和五大道 → 西开教堂 → 滨江道和赤峰道 → 津湾广场吃晚饭 → 过解放桥看世纪钟。</p></div>
-            <div class="day"><h3>周日</h3><p>饮冰室 → 意风区 → 过金汤桥去古文化街吃小吃 → 沿海河走到天津之眼。</p></div>
-          </div>
-          <p class="travel">五大道到西开教堂骑车约 7–12 分钟，西开教堂到赤峰道步行约 18–25 分钟。周六住市区方便。</p>
-        </details>
-        <fieldset class="extras">
-          <legend>有没有特别想去的？（可多选）</legend>
-          <div class="checks">
-            <label class="check"><input type="checkbox" value="逛五大道">五大道</label>
-            <label class="check"><input type="checkbox" value="去西开教堂">西开教堂</label>
-            <label class="check"><input type="checkbox" value="进瓷房子看看">瓷房子</label>
-            <label class="check"><input type="checkbox" value="去古文化街吃小吃">古文化街小吃</label>
-            <label class="check"><input type="checkbox" value="坐天津之眼夜场">天津之眼夜场</label>
-          </div>
-        </fieldset>
-      </section>
+      <div id="planner" hidden>
+        <section class="glass panel" aria-labelledby="variant-heading">
+          <h2 id="variant-heading" class="section-title">想怎么逛？</h2>
+          <div id="variants" class="picks variants" role="group" aria-labelledby="variant-heading"></div>
+          <p id="variant-note" class="muted"></p>
+        </section>
 
-      <section id="coast" hidden aria-label="滨海选项">
-        <details class="route" open>
-          <summary>滨海怎么玩</summary>
-          <div class="days">
-            <div class="day"><h3>周六</h3><p>到滨海图书馆逛逛。有时间就去东疆亲海公园，之后吃晚饭，在滨海住一晚。</p></div>
-            <div class="day"><h3>周日</h3><p>上午逛国家海洋博物馆，午饭后去观澜角散步，再去返程站。</p></div>
-          </div>
-          <p class="travel">图书馆到东疆打车约 30–45 分钟，海博馆到观澜角打车约 15–25 分钟。海博馆需要提前预约。</p>
-        </details>
-        <fieldset class="extras">
-          <legend>有没有特别想去的？（可多选）</legend>
-          <div class="checks">
-            <label class="check"><input type="checkbox" value="逛滨海图书馆">滨海图书馆</label>
-            <label class="check"><input type="checkbox" value="逛海博馆">国家海洋博物馆</label>
-            <label class="check"><input type="checkbox" value="在观澜角看海">观澜角</label>
-            <label class="check"><input type="checkbox" value="加上东疆亲海公园">东疆亲海公园</label>
-          </div>
-        </fieldset>
-      </section>
+        <section class="glass panel" aria-labelledby="schedule-heading">
+          <h2 class="section-title" id="schedule-heading">两天怎么走</h2>
+          <div class="days" id="days"></div>
+          <details id="transit">
+            <summary>展开每段路程和交通方式</summary>
+            <ul class="legs" id="legs"></ul>
+            <p class="helper muted">距离和耗时是估算，候车、找单车和排队另计。到时按导航走。</p>
+          </details>
+          <p class="helper muted" id="stay"></p>
+          <p class="helper" id="links"></p>
+        </section>
 
-      <section class="reply" id="reply" hidden aria-labelledby="reply-title">
-        <h2 id="reply-title">可以直接这样回</h2>
-        <textarea id="message" rows="2" readonly aria-labelledby="reply-title"></textarea>
-        <button type="button" id="copy">复制这句话</button>
-        <p id="status" role="status"></p>
-      </section>
+        <section class="glass panel preferences" aria-label="想去的景点和出行偏好">
+          <fieldset>
+            <legend>特别想去哪里？<small class="muted"> 可多选</small></legend>
+            <div id="stops" class="picks"></div>
+          </fieldset>
+          <fieldset>
+            <legend>路上你更喜欢</legend>
+            <div class="picks">
+              <label class="pick"><input type="radio" name="transport" value="以步行为主">慢慢走</label>
+              <label class="pick"><input type="radio" name="transport" value="短途骑共享单车">可以骑车</label>
+              <label class="pick"><input type="radio" name="transport" value="累了就打车">走累了就打车</label>
+              <label class="pick"><input type="radio" name="transport" value="">都可以</label>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>想玩得多满？</legend>
+            <div class="picks">
+              <label class="pick"><input type="radio" name="pace" value="想慢慢逛，留点时间吃饭休息">慢慢逛</label>
+              <label class="pick"><input type="radio" name="pace" value="想多看看几个地方">想多逛几处</label>
+              <label class="pick"><input type="radio" name="pace" value="">都可以</label>
+            </div>
+          </fieldset>
+        </section>
+
+        <section class="glass panel" aria-labelledby="reply-heading">
+          <h2 id="reply-heading">回我一句就好</h2>
+          <textarea id="reply" rows="2" readonly aria-labelledby="reply-heading"></textarea>
+          <div class="reply-row">
+            <button id="copy" type="button">复制回复</button>
+            <p class="muted" id="status" role="status"></p>
+          </div>
+        </section>
+      </div>
     </form>
   </main>
   <script>
-    const form = document.getElementById("invite");
-    const panels = {
-      city: document.getElementById("city"),
-      coast: document.getElementById("coast")
-    };
-    const reply = document.getElementById("reply");
-    const message = document.getElementById("message");
-    const status = document.getElementById("status");
-    const opening = {
-      city: "我想选市区线！",
-      coast: "我想选滨海线！"
+    const citySat = [
+      ["12:00", "在市区碰头，吃午饭"],
+      ["13:00", "民园广场，沿重庆道、常德道逛五大道"],
+      ["14:45", "西开教堂，沿滨江道去赤峰道"],
+      ["15:30", "瓷房子和张学良故居，挑一处进去慢慢看"],
+      ["17:15", "津湾广场吃晚饭，过解放桥看世纪钟"]
+    ];
+    const citySun = [
+      ["09:00", "梁启超纪念馆和饮冰室"],
+      ["10:15", "意风区，逛马可波罗广场"],
+      ["11:00", "过金汤桥到古文化街吃小吃"],
+      ["12:30", "沿海河走到天津之眼，拍照或坐日场"],
+      ["14:30", "结束，按返程车次留时间"]
+    ];
+    const cityWalk = [
+      ["市区住宿点 → 民园广场", "约 2.8–3.6 公里 · 骑车 15–25 分钟，或打车 10–20 分钟"],
+      ["五大道北侧 → 西开教堂", "约 1.2–1.8 公里 · 骑车 7–12 分钟，或步行 18–28 分钟"],
+      ["西开教堂 → 滨江道 → 赤峰道", "约 1.2–1.6 公里 · 步行 18–25 分钟"],
+      ["瓷房子 ↔ 张学良故居", "约 100–200 米 · 步行 2–4 分钟"],
+      ["赤峰道 → 津湾广场", "约 1.1–1.5 公里 · 步行 16–23 分钟"],
+      ["津湾广场 → 解放桥 → 世纪钟", "约 0.3–0.5 公里 · 步行 5–10 分钟"],
+      ["世纪钟 → 市区住宿点", "约 4.5–6 公里 · 打车 15–30 分钟"],
+      ["市区住宿点 → 饮冰室", "约 4.5–6 公里 · 打车 15–30 分钟"],
+      ["饮冰室 → 马可波罗广场", "约 0.3–0.5 公里 · 步行 5–8 分钟"],
+      ["马可波罗广场 → 金汤桥 → 古文化街南口", "约 0.9–1.3 公里 · 步行 13–20 分钟"],
+      ["古文化街南口 → 北口", "约 0.6–0.7 公里 · 逛吃留 45–75 分钟"],
+      ["古文化街北口 → 金刚桥 → 天津之眼", "约 1.1–1.6 公里 · 步行 16–25 分钟，或骑车 6–10 分钟"],
+      ["天津之眼 → 天津站", "约 4–5.5 公里 · 打车 15–30 分钟"]
+    ];
+    const coastArrival = [
+      ["天津市区 → 滨海文化中心", "约 55–70 公里 · 打车 60–100 分钟；也可从天津站坐地铁 9 号线或查城际班次"],
+      ["市民广场站或滨海站 → 滨海图书馆", "约 2–3 公里 · 打车 8–15 分钟，或骑车 12–20 分钟"]
+    ];
+    const coastSun = [
+      ["09:15", "入馆逛国家海洋博物馆，留约 2.5 小时"],
+      ["11:45", "在海博馆附近吃午饭"],
+      ["12:30", "到观澜角沿海边走走，留约半小时"],
+      ["13:45", "去返程站，按车次留进站时间"]
+    ];
+    const coastReturn = [
+      ["滨海文化中心或滨海站附近 → 国家海洋博物馆", "约 18–26 公里 · 打车 35–50 分钟"],
+      ["国家海洋博物馆 → 观澜角", "约 5–8 公里 · 打车 15–25 分钟"],
+      ["观澜角 → 滨海站", "约 20–28 公里 · 打车 40–60 分钟"],
+      ["观澜角 → 天津站（如需回市区）", "约 55–70 公里 · 打车 65–105 分钟"]
+    ];
+    const routes = {
+      city: {
+        name: "市区线",
+        stay: "住宿可选八里台附近。表里涉及住宿点的距离按八里台估算。",
+        links: [["西开教堂开放信息", "https://s.visitbeijing.com.cn/attraction/120428"], ["天津之眼票务公告", "https://m.tj.bendibao.com/xiuxian/167820.shtm?src=amap"]],
+        variants: {
+          classic: {
+            name: "经典海河路线",
+            note: "周六看解放桥夜景，周日慢慢走到天津之眼。五大道留约一个半小时。",
+            sat: citySat, sun: citySun, legs: cityWalk, extra: ["天津之眼日场"]
+          },
+          night: {
+            name: "天津之眼夜场",
+            note: "周六拍完世纪钟接着去天津之眼。提前买夜场票，周日逛到古文化街就可以收尾。",
+            sat: [...citySat, ["19:00", "打车去永乐桥，按票面时段乘坐天津之眼"]],
+            sun: [...citySun.slice(0, 3), ["13:30", "古文化街附近吃饭或返程"]],
+            legs: [
+              ...cityWalk.slice(0, 6),
+              ["世纪钟 → 天津之眼", "约 4–5.5 公里 · 打车 15–25 分钟"],
+              ["天津之眼 → 市区住宿点", "约 5.5–7 公里 · 打车 20–35 分钟"],
+              ...cityWalk.slice(7, 11)
+            ],
+            extra: ["天津之眼夜场"]
+          },
+          church: {
+            name: "周日先去教堂",
+            note: "西开教堂挪到周日，想参加弥撒可以先电话确认场次，后面的时间按实际场次顺延。",
+            sat: [citySat[0], citySat[1], ["14:45", "直接去赤峰道，顺路逛滨江道"], ...citySat.slice(3)],
+            sun: [["按场次", "先去西开教堂"], ...citySun],
+            legs: [
+              cityWalk[0],
+              ["五大道 → 赤峰道", "约 1.7–2.3 公里 · 骑车 9–15 分钟"],
+              ...cityWalk.slice(3, 7),
+              ["市区住宿点 → 西开教堂", "约 2–3 公里 · 骑车 12–20 分钟"],
+              ["西开教堂 → 饮冰室", "约 3.5–5 公里 · 打车 15–25 分钟"],
+              ...cityWalk.slice(8)
+            ],
+            extra: ["周日弥撒", "天津之眼日场"]
+          }
+        },
+        stops: ["五大道", "西开教堂", "滨江道", "瓷房子", "张学良故居", "解放桥和世纪钟夜景", "饮冰室", "意风区", "古文化街小吃"]
+      },
+      coast: {
+        name: "滨海线",
+        stay: "住滨海文化中心或滨海站附近方便返程。方特玩法也可以住生态城，周日更靠近海博馆。",
+        links: [["海博馆预约须知", "https://www.nmmc.cc/?active_id=165"], ["观澜角位置", "https://www.eco-city.gov.cn/p1/stcxw/20250529/58559.html"]],
+        variants: {
+          easy: {
+            name: "图书馆＋海博馆",
+            note: "周六留时间吃饭、休息，周日逛海博馆和观澜角。海博馆常设展可免费实名预约。",
+            sat: [["12:00", "市区吃午饭后出发"], ["14:00", "滨海图书馆中心馆区，看看中庭"], ["15:00", "在文化中心附近歇会儿，傍晚吃饭、入住"]],
+            sun: coastSun,
+            legs: [...coastArrival, ["图书馆 → 滨海文化中心附近酒店", "约 0.5–2 公里 · 步行 8–30 分钟"], ...coastReturn],
+            extra: ["滨海图书馆"]
+          },
+          dongjiang: {
+            name: "加去东疆看海",
+            note: "周六看东疆，周日看观澜角。两处在不同片区，周六尽量在天黑前到东疆。",
+            sat: [["12:00", "从市区出发"], ["14:00", "滨海图书馆中心馆区"], ["15:00", "打车去东疆亲海公园"], ["17:00", "回滨海文化中心一带吃晚饭、入住"]],
+            sun: coastSun,
+            legs: [...coastArrival, ["图书馆 → 东疆亲海公园", "约 14–20 公里 · 打车 30–45 分钟"], ["东疆亲海公园 → 滨海文化中心或滨海站附近", "约 14–22 公里 · 打车 30–50 分钟"], ...coastReturn],
+            extra: ["滨海图书馆", "东疆亲海公园"]
+          },
+          polar: {
+            name: "换成极地海洋公园",
+            note: "周六优先看活体动物和表演。出园还有时间再去滨海图书馆，按当天演出和开馆时间安排。",
+            sat: [["12:00", "从市区出发，查合适的城际班次"], ["14:00", "游玩极地海洋公园"], ["傍晚", "视开馆时间去滨海图书馆，再吃晚饭"]],
+            sun: coastSun,
+            legs: [coastArrival[0], ["滨海站 → 极地海洋公园", "约 4–7 公里 · 打车 12–20 分钟"], ["极地海洋公园 → 滨海图书馆（可选）", "约 6–9 公里 · 打车 15–25 分钟"], ...coastReturn],
+            extra: ["极地海洋公园", "滨海图书馆"],
+            link: ["极地海洋公园营业时间", "https://www.haichangoceanpark.com/tianjin/park-hour"]
+          },
+          fantawild: {
+            name: "换成方特",
+            note: "把周六下午留给方特，优先玩想玩的项目。先看当天营业时间，再定出发时间。",
+            sat: [["12:00", "从市区或滨海站往生态城出发"], ["下午", "方特欢乐世界"], ["傍晚", "在生态城吃饭、入住"]],
+            sun: coastSun,
+            legs: [["滨海站 → 方特", "约 25–35 公里 · 打车 40–60 分钟"], ["方特 → 生态城附近酒店", "按酒店位置打车"], ["生态城酒店 → 国家海洋博物馆", "车程按酒店位置和当天导航估算"], ...coastReturn.slice(1)],
+            extra: ["方特欢乐世界"],
+            link: ["天津方特官网", "https://tianjin.fangte.com/"]
+          }
+        },
+        stops: ["国家海洋博物馆", "观澜角"]
+      }
     };
 
-    function updateChoice() {
-      const choice = form.querySelector('input[name="route"]:checked')?.value;
-      for (const [key, panel] of Object.entries(panels)) {
-        panel.hidden = key !== choice;
-      }
-      reply.hidden = !choice;
-      status.textContent = "";
-      if (!choice) return;
-      const picks = [...panels[choice].querySelectorAll('input[type="checkbox"]:checked')]
-        .map((checkbox) => checkbox.value);
-      message.value = opening[choice] + (picks.length ? "想" + picks.join("、") + "。" : "");
+    const byId = (id) => document.getElementById(id);
+    const form = byId("invite");
+    const planner = byId("planner");
+    const variants = byId("variants");
+    const stops = byId("stops");
+    const reply = byId("reply");
+    const status = byId("status");
+    const remembered = { city: { picks: new Set() }, coast: { picks: new Set() } };
+    let currentRoute;
+
+    function element(tag, text) {
+      const node = document.createElement(tag);
+      if (text !== undefined) node.textContent = text;
+      return node;
     }
+
+    function choice(type, name, value, label, checked) {
+      const control = element("input");
+      Object.assign(control, { type, name, value, checked });
+      const wrapper = element("label");
+      wrapper.className = "pick";
+      wrapper.append(control, label);
+      return wrapper;
+    }
+
+    function makeDay(title, entries) {
+      const day = element("section");
+      day.className = "day";
+      const list = element("ol");
+      for (const [time, description] of entries) {
+        const row = element("li");
+        const clockTime = /^\d\d:\d\d$/.test(time);
+        const timeLabel = element(clockTime ? "time" : "span", time);
+        if (clockTime) timeLabel.dateTime = time;
+        else timeLabel.className = "muted";
+        row.append(timeLabel, element("span", description));
+        list.append(row);
+      }
+      day.append(element("h3", title), list);
+      return day;
+    }
+
+    function renderRoute() {
+      const route = routes[currentRoute];
+      const plan = remembered[currentRoute];
+      const entry = route.variants[plan.variant];
+      byId("variant-note").textContent = entry.note;
+      byId("days").replaceChildren(makeDay("周六", entry.sat), makeDay("周日", entry.sun));
+      byId("legs").replaceChildren(...entry.legs.map(([name, travel]) => {
+        const item = element("li");
+        item.append(element("strong", name), element("span", travel));
+        return item;
+      }));
+      byId("stay").textContent = route.stay;
+      const links = entry.link ? [...route.links, entry.link] : route.links;
+      byId("links").replaceChildren();
+      for (const [index, [label, href]] of links.entries()) {
+        const link = element("a", label);
+        Object.assign(link, { href, target: "_blank", rel: "noopener noreferrer" });
+        byId("links").append(index ? " · " : "", link);
+      }
+      const visibleStops = [...route.stops, ...entry.extra];
+      stops.replaceChildren(...visibleStops.map(label => choice("checkbox", "stop", label, label, plan.picks.has(label))));
+      updateReply();
+    }
+
+    function updateReply() {
+      const route = routes[currentRoute];
+      const entry = route.variants[remembered[currentRoute].variant];
+      const values = new FormData(form);
+      const favoriteStops = values.getAll("stop");
+      const transport = values.get("transport");
+      const pace = values.get("pace");
+      const preference = [transport, pace].filter(Boolean);
+      reply.value = `我想选${route.name}，走「${entry.name}」！`
+        + (favoriteStops.length ? `特别想去：${favoriteStops.join("、")}。` : "")
+        + (preference.length ? `路上${preference.join("，")}。` : "");
+      status.textContent = "";
+    }
+
+    function selectRoute(key) {
+      currentRoute = key;
+      const plan = remembered[key];
+      const options = Object.entries(routes[key].variants);
+      plan.variant ??= options[0][0];
+      variants.replaceChildren(...options.map(([value, entry]) => choice("radio", "variant", value, entry.name, value === plan.variant)));
+      planner.hidden = false;
+      renderRoute();
+    }
+
+    form.addEventListener("change", ({target}) => {
+      if (target.name === "route") {
+        selectRoute(target.value);
+      } else if (target.name === "variant") {
+        remembered[currentRoute].variant = target.value;
+        renderRoute();
+      } else if (currentRoute) {
+        if (target.name === "stop") {
+          const picks = remembered[currentRoute].picks;
+          if (target.checked) picks.add(target.value);
+          else picks.delete(target.value);
+        }
+        updateReply();
+      }
+    });
 
     async function copyReply() {
       try {
-        await navigator.clipboard.writeText(message.value);
+        await navigator.clipboard.writeText(reply.value);
       } catch {
-        message.focus();
-        message.select();
-        message.setSelectionRange(0, message.value.length);
-        if (!document.execCommand?.("copy")) {
-          status.textContent = "已选中这句话，可以手动复制。";
-          return;
-        }
+        reply.focus();
+        reply.select();
+        reply.setSelectionRange(0, reply.value.length);
+        status.textContent = "已选中回复，可以手动复制。";
+        return;
       }
       status.textContent = "已复制，可以粘贴回聊天。";
     }
 
-    form.addEventListener("change", updateChoice);
-    document.getElementById("copy").addEventListener("click", copyReply);
-    updateChoice();
+    byId("copy").addEventListener("click", copyReply);
+    const initial = new FormData(form).get("route");
+    if (initial) selectRoute(initial);
   </script>
 </body>
 </html>
