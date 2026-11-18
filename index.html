@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>周末一起逛天津？</title>
+  <style>
+    :root {
+      --paper: #f8f5ee;
+      --white: #fffdf8;
+      --ink: #19352d;
+      --muted: #54665e;
+      --line: #dbded0;
+      --orange: #b14a27;
+      --peach: #f7e8dc;
+      --green: #236958;
+      --mint: #e7efe6;
+      font-family: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    main { width: min(100% - 36px, 750px); margin: auto; padding: clamp(30px, 7vw, 74px) 0 48px; }
+    h1, h2, h3, p, fieldset { margin: 0; }
+    header { padding: 0 0 25px; }
+    .date { display: flex; align-items: center; gap: 12px; color: var(--muted); font-size: .9rem; }
+    .date::before { content: ""; width: 32px; height: 2px; background: var(--orange); }
+    h1 { margin: 12px 0 9px; font-family: "Noto Serif SC","Songti SC","SimSun",serif; font-size: clamp(2rem, 6.8vw, 3.5rem); line-height: 1.18; letter-spacing: -.045em; }
+    p { line-height: 1.65; }
+    .intro { color: var(--muted); }
+    fieldset { border: 0; padding: 0; min-width: 0; }
+    legend { padding: 0; margin-bottom: 12px; font-weight: 700; }
+    .choices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .card { position: relative; display: grid; grid-template-columns: 1fr auto; gap: 5px 10px; align-items: start; padding: 17px; border-radius: 17px; border: 2px solid transparent; cursor: pointer; }
+    .card.city { background: var(--peach); --accent: var(--orange); }
+    .card.coast { background: var(--mint); --accent: var(--green); }
+    .card:has(input:checked) { border-color: var(--accent); }
+    .card:has(input:focus-visible) { outline: 3px solid var(--green); outline-offset: 3px; }
+    .card input { grid-column: 2; grid-row: 1; accent-color: var(--accent); width: 21px; height: 21px; margin: 0; }
+    .card strong { grid-column: 1; grid-row: 1; font-size: 1.16rem; line-height: 1.45; }
+    .card span, .card small { grid-column: 1 / -1; line-height: 1.5; }
+    .card small { color: var(--muted); margin-top: 3px; }
+    .route { margin-top: 18px; background: var(--white); border: 1px solid var(--line); border-radius: 17px; padding: 16px 18px; }
+    summary { cursor: pointer; font-weight: 700; padding: 8px 0; }
+    .days { display: grid; gap: 13px; margin-top: 8px; }
+    .day { display: grid; grid-template-columns: auto minmax(0,1fr); gap: 10px; align-items: baseline; }
+    .day h3 { font-size: .9rem; color: var(--green); }
+    .day p { font-size: .94rem; }
+    .travel { margin-top: 10px; color: var(--muted); font-size: .88rem; }
+    .extras { margin-top: 20px; }
+    .checks { display: flex; flex-wrap: wrap; gap: 7px; }
+    .check { display: flex; align-items: center; gap: 7px; min-height: 44px; border: 1px solid var(--line); background: var(--white); border-radius: 10px; padding: 7px 11px; cursor: pointer; }
+    .check input { width: 17px; height: 17px; accent-color: var(--green); margin: 0; }
+    .check:has(input:checked) { background: var(--mint); border-color: var(--green); }
+    .reply { margin-top: 21px; border-top: 1px solid var(--line); padding-top: 17px; }
+    .reply h2 { font-size: 1rem; }
+    textarea { width: 100%; min-height: 74px; margin: 9px 0; padding: 10px 12px; resize: vertical; border: 1px solid var(--line); border-radius: 10px; background: var(--white); color: var(--ink); font: inherit; line-height: 1.55; }
+    button { font: inherit; border-radius: 10px; background: var(--ink); color: var(--white); border: 0; min-height: 45px; padding: 8px 19px; cursor: pointer; }
+    button:hover { background: var(--green); }
+    :focus-visible { outline: 3px solid var(--green); outline-offset: 3px; }
+    #status { margin-top: 6px; min-height: 1.5em; color: var(--muted); font-size: .88rem; }
+    [hidden] { display: none !important; }
+    @media (max-width: 560px) {
+      .choices { grid-template-columns: 1fr; gap: 9px; }
+      .card { padding: 12px 14px; gap: 2px 10px; }
+      .card strong { font-size: 1.04rem; }
+      .card small { margin-top: 1px; }
+      .route { padding: 12px 14px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="date">周六中午出发 · 周日下午结束</p>
+      <h1>周末一起逛天津？</h1>
+      <p class="intro">我挑了两条路线，你更想逛老城，还是去海边走走？</p>
+    </header>
+
+    <form id="invite">
+      <fieldset>
+        <legend>你更想去哪儿？</legend>
+        <div class="choices">
+          <label class="card city">
+            <input type="radio" name="route" value="city" aria-controls="city">
+            <strong>市区 · 逛老城看夜景</strong>
+            <span>五大道、西开教堂、海河夜景</span>
+            <small>景点间步行或骑车，晚上看解放桥和世纪钟</small>
+          </label>
+          <label class="card coast">
+            <input type="radio" name="route" value="coast" aria-controls="coast">
+            <strong>滨海 · 逛馆再去看海</strong>
+            <span>滨海图书馆、海博馆、观澜角</span>
+            <small>景点间打车，留半天慢慢逛馆和看海</small>
+          </label>
+        </div>
+      </fieldset>
+
+      <section id="city" hidden aria-label="市区选项">
+        <details class="route" open>
+          <summary>市区怎么玩</summary>
+          <div class="days">
+            <div class="day"><h3>周六</h3><p>民园广场和五大道 → 西开教堂 → 滨江道和赤峰道 → 津湾广场吃晚饭 → 过解放桥看世纪钟。</p></div>
+            <div class="day"><h3>周日</h3><p>饮冰室 → 意风区 → 过金汤桥去古文化街吃小吃 → 沿海河走到天津之眼。</p></div>
+          </div>
+          <p class="travel">五大道到西开教堂骑车约 7–12 分钟，西开教堂到赤峰道步行约 18–25 分钟。周六住市区方便。</p>
+        </details>
+        <fieldset class="extras">
+          <legend>有没有特别想去的？（可多选）</legend>
+          <div class="checks">
+            <label class="check"><input type="checkbox" value="逛五大道">五大道</label>
+            <label class="check"><input type="checkbox" value="去西开教堂">西开教堂</label>
+            <label class="check"><input type="checkbox" value="进瓷房子看看">瓷房子</label>
+            <label class="check"><input type="checkbox" value="去古文化街吃小吃">古文化街小吃</label>
+            <label class="check"><input type="checkbox" value="坐天津之眼夜场">天津之眼夜场</label>
+          </div>
+        </fieldset>
+      </section>
+
+      <section id="coast" hidden aria-label="滨海选项">
+        <details class="route" open>
+          <summary>滨海怎么玩</summary>
+          <div class="days">
+            <div class="day"><h3>周六</h3><p>到滨海图书馆逛逛。有时间就去东疆亲海公园，之后吃晚饭，在滨海住一晚。</p></div>
+            <div class="day"><h3>周日</h3><p>上午逛国家海洋博物馆，午饭后去观澜角散步，再去返程站。</p></div>
+          </div>
+          <p class="travel">图书馆到东疆打车约 30–45 分钟，海博馆到观澜角打车约 15–25 分钟。海博馆需要提前预约。</p>
+        </details>
+        <fieldset class="extras">
+          <legend>有没有特别想去的？（可多选）</legend>
+          <div class="checks">
+            <label class="check"><input type="checkbox" value="逛滨海图书馆">滨海图书馆</label>
+            <label class="check"><input type="checkbox" value="逛海博馆">国家海洋博物馆</label>
+            <label class="check"><input type="checkbox" value="在观澜角看海">观澜角</label>
+            <label class="check"><input type="checkbox" value="加上东疆亲海公园">东疆亲海公园</label>
+          </div>
+        </fieldset>
+      </section>
+
+      <section class="reply" id="reply" hidden aria-labelledby="reply-title">
+        <h2 id="reply-title">可以直接这样回</h2>
+        <textarea id="message" rows="2" readonly aria-labelledby="reply-title"></textarea>
+        <button type="button" id="copy">复制这句话</button>
+        <p id="status" role="status"></p>
+      </section>
+    </form>
+  </main>
+  <script>
+    const form = document.getElementById("invite");
+    const panels = {
+      city: document.getElementById("city"),
+      coast: document.getElementById("coast")
+    };
+    const reply = document.getElementById("reply");
+    const message = document.getElementById("message");
+    const status = document.getElementById("status");
+    const opening = {
+      city: "我想选市区线！",
+      coast: "我想选滨海线！"
+    };
+
+    function updateChoice() {
+      const choice = form.querySelector('input[name="route"]:checked')?.value;
+      for (const [key, panel] of Object.entries(panels)) {
+        panel.hidden = key !== choice;
+      }
+      reply.hidden = !choice;
+      status.textContent = "";
+      if (!choice) return;
+      const picks = [...panels[choice].querySelectorAll('input[type="checkbox"]:checked')]
+        .map((checkbox) => checkbox.value);
+      message.value = opening[choice] + (picks.length ? "想" + picks.join("、") + "。" : "");
+    }
+
+    async function copyReply() {
+      try {
+        await navigator.clipboard.writeText(message.value);
+      } catch {
+        message.focus();
+        message.select();
+        message.setSelectionRange(0, message.value.length);
+        if (!document.execCommand?.("copy")) {
+          status.textContent = "已选中这句话，可以手动复制。";
+          return;
+        }
+      }
+      status.textContent = "已复制，可以粘贴回聊天。";
+    }
+
+    form.addEventListener("change", updateChoice);
+    document.getElementById("copy").addEventListener("click", copyReply);
+    updateChoice();
+  </script>
+</body>
+</html>
