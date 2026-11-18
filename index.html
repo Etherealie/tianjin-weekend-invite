@@ -3,165 +3,203 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#eaf1fb">
+  <meta name="theme-color" content="#1c1c1e">
   <meta name="description" content="从天津市区和滨海挑一条周末路线，再选想去的景点。">
   <title>周末一起逛天津？</title>
   <style>
     :root {
-      color-scheme: light;
-      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
-      color: #172637;
-      background: #ecf1fa;
-      --muted: #526478;
-      --blue: #245995;
-      --glass: rgba(255, 255, 255, .56);
-      --edge: rgba(255, 255, 255, .9);
-      --shadow: 0 15px 44px rgba(50, 70, 117, .11), inset 0 1px 1px #fff;
+      color-scheme: dark;
+      --deepest: #1c1c1e;
+      --mid: #2c2c2e;
+      --raised: #3a3a3c;
+      --blue: #0a84ff;
+      --blue-text: #80bfff;
+      --blue-selection: rgba(10, 132, 255, .18);
+      --text: rgba(255, 255, 255, .92);
+      --muted: rgba(255, 255, 255, .66);
+      --line: rgba(255, 255, 255, .10);
+      --row-line: rgba(255, 255, 255, .08);
+      --hover: rgba(255, 255, 255, .08);
+      --serif: Georgia, "New York", "Songti SC", "Noto Serif CJK SC", SimSun, serif;
+      --mono: "SF Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+      font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+      color: var(--text);
+      background: var(--deepest);
     }
     * { box-sizing: border-box; }
-    body { margin: 0; min-height: 100vh; background: radial-gradient(ellipse at 4% 6%, #f8d7c5 0%, transparent 39%), radial-gradient(ellipse at 86% 15%, #c2d9fb 0%, transparent 48%), radial-gradient(ellipse at 83% 85%, #c5ebec 0%, transparent 48%), #eef2fa; }
+    body { margin: 0; }
     h1, h2, h3, p, fieldset, ol { margin: 0; }
-    h1 { font-size: clamp(2.5rem, 7vw, 5rem); line-height: 1.12; letter-spacing: -.07em; }
-    h2, legend { font-size: 1.22rem; font-weight: 730; letter-spacing: -.025em; }
-    p { line-height: 1.65; }
-    a { color: #174f91; text-underline-offset: 3px; }
+    h1 { font: 700 clamp(30px, 4vw, 40px)/1.15 var(--serif); letter-spacing: -.01em; }
+    h2, legend { font-size: 17px; font-weight: 600; line-height: 1.3; }
+    p { line-height: 1.6; }
+    a { color: var(--blue-text); text-underline-offset: 3px; }
     button, textarea { font: inherit; }
     button, summary, label { -webkit-tap-highlight-color: transparent; }
     button, summary, label:has(input) { cursor: pointer; }
     [hidden] { display: none !important; }
-    :focus-visible { outline: 3px solid #356ab0; outline-offset: 4px; }
-    main { width: min(calc(100% - 36px), 860px); margin-inline: auto; padding: clamp(30px, 7vw, 72px) 0 44px; }
-    .glass { background: var(--glass); border: 1px solid var(--edge); border-radius: 28px; box-shadow: var(--shadow); backdrop-filter: blur(22px) saturate(145%); }
-    .hero { position: relative; isolation: isolate; overflow: hidden; padding: clamp(24px, 5vw, 44px); margin-bottom: 28px; }
-    .hero::after { content: ""; position: absolute; z-index: -1; width: 40%; aspect-ratio: 1; top: -45%; right: -4%; border: 1px solid #fff; border-radius: 46%; transform: rotate(-22deg); background: linear-gradient(145deg, #fff8, #b3c9f64d 60%, #fff7); box-shadow: 0 25px 58px #6182ba24, inset 0 0 22px #fff9; }
-    .hero .date { margin-bottom: 9px; font-size: .88rem; font-weight: 660; color: var(--muted); }
-    .hero p:last-child { margin-top: 13px; color: var(--muted); }
+    :focus-visible { outline: 1px solid var(--blue); outline-offset: 3px; }
+    .route-choice, .pick, button { transition: background-color 200ms ease-out, color 200ms ease-out; }
+    main { width: min(calc(100% - 48px), 1120px); height: min(calc(100dvh - 48px), 860px); margin: 24px auto; border: 1px solid var(--line); border-radius: 14px; display: grid; grid-template-rows: 52px minmax(0, 1fr); overflow: hidden; background: var(--mid); box-shadow: 0 1px 0 var(--row-line) inset, 0 20px 48px rgba(0, 0, 0, .5); }
+    .window-bar { display: grid; place-items: center; padding-inline: 16px; background: var(--raised); border-bottom: 1px solid var(--line); }
+    .window-bar p { font: 400 13px/1.25 var(--serif); }
+    #invite { display: grid; grid-template-columns: 240px minmax(0, 1fr); min-height: 0; }
+    .sidebar { min-width: 0; padding: 16px 12px; border-right: 1px solid var(--line); background: var(--deepest); background: rgba(28, 28, 30, .8); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); }
+    .sidebar legend { padding-inline: 8px; margin-bottom: 8px; color: var(--muted); font-size: 13px; }
+    .workspace { min-width: 0; min-height: 0; overflow: auto; padding: 32px clamp(20px, 4vw, 48px); }
+    .hero { padding-bottom: 24px; border-bottom: 1px solid var(--line); }
+    .hero .date { margin-bottom: 8px; font-size: 13px; color: var(--muted); }
+    .hero p:last-child { margin-top: 12px; color: var(--muted); }
     fieldset { padding: 0; border: 0; min-width: 0; }
     legend { padding: 0; margin-bottom: 12px; }
-    .routes, .days { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-    .route-choice { position: relative; isolation: isolate; overflow: hidden; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 10px; padding: 20px; min-height: 129px; }
-    .route-choice.city { background: linear-gradient(145deg, #fff9f3d9, #fbe4dbc2); }
-    .route-choice.coast { background: linear-gradient(145deg, #f5fbffd9, #d4ebf9ca); }
-    .route-choice::before { content: ""; position: absolute; z-index: -1; inset: auto -7% -65% 52%; aspect-ratio: 1.35; border-radius: 48%; transform: rotate(-25deg); background: linear-gradient(160deg, #fffd, transparent); box-shadow: inset 0 1px 3px #fffc; pointer-events: none; }
-    .route-choice:has(:checked), .pick:has(:checked) { border-color: #3674b9; box-shadow: 0 0 0 1px #3674b9, var(--shadow); }
-    .route-choice strong { font-size: clamp(1.28rem, 3.4vw, 1.75rem); letter-spacing: -.055em; }
-    .route-choice span, .route-choice small { grid-column: 1 / -1; }
-    .route-choice small, .muted { color: var(--muted); line-height: 1.55; }
-    input { accent-color: #245b9b; }
-    .route-choice input { width: 19px; height: 19px; margin: 3px 0 0; }
-    .panel { margin-top: 14px; padding: clamp(15px, 4.1vw, 26px); }
-    .picks { display: flex; flex-wrap: wrap; gap: 9px; }
-    .pick { display: flex; align-items: center; gap: 7px; min-height: 44px; padding: 8px 12px; border: 1px solid var(--edge); border-radius: 16px; background: #ffffff74; font-size: .94rem; }
-    .pick input { margin: 0; width: 16px; height: 16px; flex: 0 0 auto; }
-    .picks.variants .pick { min-height: 46px; }
-    #variant-note { margin-top: 12px; font-size: .92rem; }
-    .day { min-width: 0; padding: 15px; border-radius: 18px; border: 1px solid #fff; background: #ffffff60; }
-    .day h3 { margin-bottom: 9px; font-size: 1rem; }
+    .routes { display: grid; gap: 1px; }
+    .route-choice { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 3px 8px; padding: 8px; min-height: 44px; border-radius: 6px; }
+    .route-choice + .route-choice { position: relative; }
+    .route-choice + .route-choice::before { content: ""; position: absolute; inset: -1px 8px auto; border-top: 1px solid var(--row-line); }
+    .route-choice:hover, .pick:hover { background: var(--hover); }
+    .route-choice:has(:checked), .pick:has(:checked) { background: var(--blue-selection); }
+    .route-choice strong { font-size: 15px; font-weight: 600; }
+    .route-choice span { grid-column: 1 / -1; color: var(--muted); font-size: 13px; }
+    .route-choice small { display: none; }
+    input { accent-color: var(--blue); }
+    .route-choice input, .pick input { width: 16px; height: 16px; margin: 0; flex: 0 0 auto; }
+    .muted { color: var(--muted); }
+    .panel { padding: 24px 0; border-bottom: 1px solid var(--line); }
+    .panel:last-child { border-bottom: 0; padding-bottom: 0; }
+    .picks { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pick { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 6px 10px; border: 1px solid var(--row-line); border-radius: 6px; font-size: 13px; }
+    .variants { gap: 4px; padding: 4px; background: rgba(255, 255, 255, .06); border-radius: 8px; }
+    .variants .pick { border: 0; flex: 1 1 auto; }
+    .variants .pick:has(:checked) { background: var(--raised); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06); }
+    #variant-note { margin-top: 12px; font-size: 13px; }
+    .days { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .day { min-width: 0; padding: 12px; border-radius: 10px; border: 1px solid var(--row-line); background: var(--deepest); }
+    .day h3 { padding: 0 4px 8px; font-size: 15px; font-weight: 600; }
     .day ol { padding: 0; list-style: none; }
-    .day li { display: grid; grid-template-columns: 3.4rem minmax(0,1fr); gap: 6px; padding: 6px 0; line-height: 1.55; font-size: .9rem; }
-    .day time { font-variant-numeric: tabular-nums; color: var(--blue); font-weight: 700; }
+    .day li { min-height: 44px; display: grid; grid-template-columns: 3rem minmax(0, 1fr); align-items: baseline; gap: 8px; padding: 8px 4px; border-top: 1px solid var(--row-line); font-size: 13px; }
+    .day time { font: 13px/1.4 var(--mono); font-variant-numeric: tabular-nums; color: var(--muted); }
     .section-title { margin-bottom: 12px; }
-    details { margin-top: 13px; border-top: 1px solid #7b94b238; }
-    summary { padding: 11px 0 3px; font-weight: 650; }
+    details { margin-top: 12px; }
+    summary { min-height: 44px; padding: 11px 0; font-weight: 600; color: var(--blue-text); }
     .legs { padding: 0; list-style: none; }
-    .legs li { padding: 9px 0; border-bottom: 1px solid #7b94b226; }
-    .legs strong, .legs span { display: block; line-height: 1.6; font-size: .9rem; }
+    .legs li { padding: 8px 0; border-top: 1px solid var(--row-line); }
+    .legs strong, .legs span { display: block; font-size: 13px; line-height: 1.6; }
+    .legs strong { font-weight: 600; }
     .legs span { color: var(--muted); }
-    .helper { margin-top: 9px; font-size: .85rem; }
-    .preferences { display: grid; gap: 18px; }
-    .reply-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
-    textarea { display: block; width: 100%; min-height: 78px; border: 1px solid #fff; background: #ffffff83; color: inherit; border-radius: 16px; margin: 11px 0; padding: 10px 13px; line-height: 1.55; resize: vertical; }
-    button { min-height: 44px; border-radius: 999px; border: 1px solid #fff9; background: linear-gradient(155deg, #397bc4, #215195); color: #fff; font-weight: 690; padding: 8px 18px; box-shadow: 0 6px 17px #24599538, inset 0 1px 1px #fff7; }
-    button:hover { background: #214f91; }
-    #status { font-size: .86rem; }
-    @media (max-width: 570px) {
-      main { width: calc(100% - 28px); }
-      .hero { margin-bottom: 21px; }
-      .routes, .days { grid-template-columns: 1fr; }
-      .route-choice { min-height: 0; padding: 14px 16px; }
-      .glass { border-radius: 23px; }
-      .day { padding: 12px; }
+    .helper { margin-top: 8px; font-size: 13px; }
+    .preferences { display: grid; gap: 16px; }
+    .preferences legend small { margin-left: 4px; font-size: 13px; font-weight: 400; }
+    .reply-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+    textarea { display: block; width: 100%; min-height: 78px; border: 1px solid var(--line); background: var(--deepest); color: inherit; border-radius: 6px; margin: 12px 0; padding: 8px 12px; line-height: 1.6; resize: vertical; }
+    button { min-height: 44px; border-radius: 6px; border: 0; background: var(--blue); color: var(--deepest); font-size: 13px; font-weight: 600; padding: 6px 14px; }
+    button:hover { background: #2592ff; }
+    button:active { background: #0977e6; }
+    #status { font-size: 13px; }
+    @media (max-width: 740px) {
+      main { width: 100%; min-height: 100vh; min-height: 100dvh; height: auto; margin: 0; display: block; border: 0; border-radius: 0; box-shadow: none; }
+      .window-bar { position: sticky; top: 0; height: 52px; z-index: 1; }
+      #invite { display: grid; grid-template-columns: 1fr; grid-template-areas: "intro" "routes" "planner"; }
+      .sidebar { grid-area: routes; padding: 12px 16px; border-right: 0; border-bottom: 1px solid var(--line); }
+      .routes { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+      .route-choice + .route-choice::before { display: none; }
+      .route-choice { align-content: start; min-height: 62px; }
+      .route-choice strong { font-size: 13px; }
+      .route-choice span { font-size: 12px; }
+      .workspace { display: contents; }
+      .hero { grid-area: intro; padding: 24px 16px; }
+      #planner { grid-area: planner; padding: 0 16px 24px; }
+    }
+    @media (max-width: 560px) {
+      .days { grid-template-columns: 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .route-choice, .pick, button { transition: none; }
     }
   </style>
 </head>
 <body>
   <main>
-    <header class="hero glass">
-      <p class="date">周六中午出发 · 周日下午结束</p>
-      <h1>周末一起逛天津？</h1>
-      <p>海河夜景、老房子，或者去滨海看海。挑一条你更想走的，再选几个特别想去的地方。</p>
+    <header class="window-bar">
+      <p>天津周末路线</p>
     </header>
 
     <form id="invite">
-      <fieldset>
-        <legend>想去哪边？</legend>
-        <div class="routes">
-          <label class="route-choice city glass">
-            <strong>市区 · 逛老城</strong>
-            <input name="route" value="city" type="radio" aria-controls="planner">
-            <span>五大道、西开教堂、海河夜景</span>
-            <small>短途步行或骑车，晚上看解放桥和世纪钟</small>
-          </label>
-          <label class="route-choice coast glass">
-            <strong>滨海 · 去看海</strong>
-            <input name="route" value="coast" type="radio" aria-controls="planner">
-            <span>海博馆、观澜角，也可以去东疆</span>
-            <small>区内主要打车，周六可选东疆、极地海洋公园或方特</small>
-          </label>
+      <aside class="sidebar" aria-label="路线选择">
+        <fieldset>
+            <legend>想去哪边？</legend>
+            <div class="routes">
+              <label class="route-choice">
+                <strong>市区 · 逛老城</strong>
+                <input name="route" value="city" type="radio" aria-controls="planner">
+                <span>五大道、西开教堂、海河夜景</span>
+              </label>
+              <label class="route-choice">
+                <strong>滨海 · 去看海</strong>
+                <input name="route" value="coast" type="radio" aria-controls="planner">
+                <span>海博馆、观澜角，也可以去东疆</span>
+              </label>
+            </div>
+        </fieldset>
+      </aside>
+
+      <div class="workspace">
+        <section class="hero" aria-labelledby="page-title">
+          <p class="date">周六中午出发 · 周日下午结束</p>
+          <h1 id="page-title">周末一起逛天津？</h1>
+          <p>海河夜景、老房子，或者去滨海看海。挑一条你更想走的，再选几个特别想去的地方。</p>
+        </section>
+
+        <div id="planner" hidden>
+          <section class="panel" aria-labelledby="variant-heading">
+            <h2 id="variant-heading" class="section-title">想怎么逛？</h2>
+            <div id="variants" class="picks variants" role="group" aria-labelledby="variant-heading"></div>
+            <p id="variant-note" class="muted"></p>
+          </section>
+
+          <section class="panel" aria-labelledby="schedule-heading">
+            <h2 class="section-title" id="schedule-heading">两天怎么走</h2>
+            <div class="days" id="days"></div>
+            <details id="transit">
+              <summary>展开每段路程和交通方式</summary>
+              <ul class="legs" id="legs"></ul>
+              <p class="helper muted">距离和耗时是估算，候车、找单车和排队另计。到时按导航走。</p>
+            </details>
+            <p class="helper muted" id="stay"></p>
+            <p class="helper" id="links"></p>
+          </section>
+
+          <section class="panel preferences" aria-label="想去的景点和出行偏好">
+            <fieldset>
+              <legend>特别想去哪里？<small class="muted"> 可多选</small></legend>
+              <div id="stops" class="picks"></div>
+            </fieldset>
+            <fieldset>
+              <legend>路上你更喜欢</legend>
+              <div class="picks">
+                <label class="pick"><input type="radio" name="transport" value="以步行为主">慢慢走</label>
+                <label class="pick"><input type="radio" name="transport" value="短途骑共享单车">可以骑车</label>
+                <label class="pick"><input type="radio" name="transport" value="累了就打车">走累了就打车</label>
+                <label class="pick"><input type="radio" name="transport" value="">都可以</label>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend>想玩得多满？</legend>
+              <div class="picks">
+                <label class="pick"><input type="radio" name="pace" value="想慢慢逛，留点时间吃饭休息">慢慢逛</label>
+                <label class="pick"><input type="radio" name="pace" value="想多看看几个地方">想多逛几处</label>
+                <label class="pick"><input type="radio" name="pace" value="">都可以</label>
+              </div>
+            </fieldset>
+          </section>
+
+          <section class="panel" aria-labelledby="reply-heading">
+            <h2 id="reply-heading">回我一句就好</h2>
+            <textarea id="reply" rows="2" readonly aria-labelledby="reply-heading"></textarea>
+            <div class="reply-row">
+              <button id="copy" type="button">复制回复</button>
+              <p class="muted" id="status" role="status"></p>
+            </div>
+          </section>
         </div>
-      </fieldset>
-
-      <div id="planner" hidden>
-        <section class="glass panel" aria-labelledby="variant-heading">
-          <h2 id="variant-heading" class="section-title">想怎么逛？</h2>
-          <div id="variants" class="picks variants" role="group" aria-labelledby="variant-heading"></div>
-          <p id="variant-note" class="muted"></p>
-        </section>
-
-        <section class="glass panel" aria-labelledby="schedule-heading">
-          <h2 class="section-title" id="schedule-heading">两天怎么走</h2>
-          <div class="days" id="days"></div>
-          <details id="transit">
-            <summary>展开每段路程和交通方式</summary>
-            <ul class="legs" id="legs"></ul>
-            <p class="helper muted">距离和耗时是估算，候车、找单车和排队另计。到时按导航走。</p>
-          </details>
-          <p class="helper muted" id="stay"></p>
-          <p class="helper" id="links"></p>
-        </section>
-
-        <section class="glass panel preferences" aria-label="想去的景点和出行偏好">
-          <fieldset>
-            <legend>特别想去哪里？<small class="muted"> 可多选</small></legend>
-            <div id="stops" class="picks"></div>
-          </fieldset>
-          <fieldset>
-            <legend>路上你更喜欢</legend>
-            <div class="picks">
-              <label class="pick"><input type="radio" name="transport" value="以步行为主">慢慢走</label>
-              <label class="pick"><input type="radio" name="transport" value="短途骑共享单车">可以骑车</label>
-              <label class="pick"><input type="radio" name="transport" value="累了就打车">走累了就打车</label>
-              <label class="pick"><input type="radio" name="transport" value="">都可以</label>
-            </div>
-          </fieldset>
-          <fieldset>
-            <legend>想玩得多满？</legend>
-            <div class="picks">
-              <label class="pick"><input type="radio" name="pace" value="想慢慢逛，留点时间吃饭休息">慢慢逛</label>
-              <label class="pick"><input type="radio" name="pace" value="想多看看几个地方">想多逛几处</label>
-              <label class="pick"><input type="radio" name="pace" value="">都可以</label>
-            </div>
-          </fieldset>
-        </section>
-
-        <section class="glass panel" aria-labelledby="reply-heading">
-          <h2 id="reply-heading">回我一句就好</h2>
-          <textarea id="reply" rows="2" readonly aria-labelledby="reply-heading"></textarea>
-          <div class="reply-row">
-            <button id="copy" type="button">复制回复</button>
-            <p class="muted" id="status" role="status"></p>
-          </div>
-        </section>
       </div>
     </form>
   </main>
